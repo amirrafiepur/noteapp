@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چاپ متن</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/print.css' %}">
+</head>
+<body>
+    <p class="screen-only print-hint">در حال آماده‌سازی چاپ...</p>
+    <p id="print-close-fallback" class="screen-only print-close-fallback" hidden>
+        اگر این صفحه به‌صورت خودکار بسته نشد، می‌توانید این زبانه را ببندید.
+        <button type="button" class="print-close-fallback__button">بستن</button>
+    </p>
+
+    <article class="print-document">
+        <header class="print-document__header">
+            <h1 class="print-document__title">یادداشت</h1>
+            <time class="print-document__date" datetime="{{ note.created_at|date:'c' }}">
+                {{ note.created_at|date:"Y/m/d H:i" }}
+            </time>
+        </header>
+        <div class="print-document__content">{{ note.content }}</div>
+    </article>
+
+    <script>
+        (function () {
+            var cleanupDone = false;
+            var fallbackTimerId = null;
+
+            function closePrintWindow() {
+                if (cleanupDone) {
+                    return;
+                }
+                cleanupDone = true;
+
+                if (fallbackTimerId !== null) {
+                    window.clearTimeout(fallbackTimerId);
+                }
+
+                window.close();
+
+                fallbackTimerId = window.setTimeout(function () {
+                    if (!window.closed) {
+                        var fallback = document.getElementById('print-close-fallback');
+                        if (fallback) {
+                            fallback.hidden = false;
+                        }
+                    }
+                }, 500);
+            }
+
+            window.addEventListener('afterprint', closePrintWindow);
+
+            window.addEventListener('load', function () {
+                window.print();
+            });
+
+            var fallbackButton = document.querySelector('.print-close-fallback__button');
+            if (fallbackButton) {
+                fallbackButton.addEventListener('click', function () {
+                    window.close();
+                });
+            }
+        }());
+    </script>
+</body>
+</html>

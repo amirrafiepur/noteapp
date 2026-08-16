@@ -1,0 +1,42 @@
+---
+description: Incremental development workflow
+alwaysApply: true
+---
+
+# Development Workflow
+
+Work on one phase at a time.
+
+Do not jump ahead to future phases unless explicitly instructed.
+
+Before modifying files:
+
+1. Inspect the existing project structure.
+2. Read the relevant files.
+3. Understand the current implementation.
+4. Identify the smallest required change.
+
+After modifying files:
+
+1. Run appropriate Django checks.
+2. Run relevant tests when available.
+3. Verify the affected functionality.
+4. Report what changed.
+5. Report any errors or remaining issues.
+
+Do not claim that something works unless it has been verified.
+
+Do not rewrite working code unnecessarily.
+
+Do not add dependencies without a clear reason.
+
+If an error occurs:
+
+1. Read the complete error.
+2. Identify the root cause.
+3. Fix the underlying problem.
+4. Re-run the relevant check.
+
+Do not randomly modify unrelated files.
+
+Do not implement features that were not requested.

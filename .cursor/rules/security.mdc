@@ -1,0 +1,46 @@
+---
+description: Security rules for the Django prototype
+alwaysApply: true
+---
+
+# Security Rules
+
+## Authentication
+
+Use Django's built-in authentication system.
+
+Never create custom password hashing or authentication mechanisms.
+
+Never store plaintext passwords.
+
+## Authorization
+
+Every protected view must require authentication.
+
+Every Note query that exposes user data must be restricted to the authenticated user.
+
+Never fetch a Note only by its primary key when the result will be shown to a user.
+
+Use ownership filtering such as:
+
+get_object_or_404(Note, pk=pk, owner=request.user)
+
+## Note Creation
+
+Never trust a client-supplied owner or user field.
+
+The owner must always be assigned server-side from:
+
+request.user
+
+## Forms
+
+Every POST form must use Django CSRF protection.
+
+Do not disable CSRF protection.
+
+## Security Changes
+
+Do not weaken Django security mechanisms simply to make development easier.
+
+If a security-related change is necessary, explain why before implementing it.

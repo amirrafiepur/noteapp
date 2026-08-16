@@ -1,0 +1,114 @@
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('../fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Vazirmatn';
+    src: url('../fonts/vazirmatn/Vazirmatn-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+    line-height: 1.8;
+    color: #000;
+    background: #fff;
+}
+
+.print-hint {
+    margin: 1rem;
+    text-align: center;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.print-close-fallback {
+    margin: 1rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    color: #333;
+    background: #fff8e1;
+    border: 1px solid #f3d19c;
+    border-radius: 6px;
+}
+
+.print-close-fallback__button {
+    margin-inline-start: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+}
+
+.print-document {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.print-document__header {
+    margin-block-end: 1.5rem;
+    padding-block-end: 0.75rem;
+    border-block-end: 1px solid #ccc;
+}
+
+.print-document__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.print-document__date {
+    display: block;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.print-document__content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 1rem;
+}
+
+@media print {
+    @page {
+        margin: 2cm;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    .screen-only {
+        display: none !important;
+    }
+
+    .print-document {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .print-document__header {
+        border-block-end-color: #999;
+    }
+}

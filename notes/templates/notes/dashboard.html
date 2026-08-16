@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}داشبورد{% endblock %}
+{% block body_class %}page-dashboard{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1 class="page-header__title">داشبورد</h1>
+    <p class="page-header__subtitle">متن جدید بنویسید یا یادداشت‌های ذخیره‌شده خود را ببینید.</p>
+</header>
+
+<div class="dashboard">
+    <section class="dashboard__panel dashboard__panel--new card">
+        <header class="card__header">
+            <h2 class="card__title">متن جدید</h2>
+        </header>
+        <form class="note-form" method="post" action="{% url 'note_create' %}" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <ul class="form-errors form-errors--summary">
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% include "partials/form_field.html" with field=form.content %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn--primary">ذخیره متن</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="dashboard__panel dashboard__panel--saved card">
+        <header class="card__header">
+            <h2 class="card__title">متن‌های ذخیره‌شده</h2>
+            {% if notes %}
+            <span class="card__badge">{{ notes|length }} مورد</span>
+            {% endif %}
+        </header>
+
+        {% if notes %}
+        <ul class="note-list">
+            {% for note in notes %}
+            <li class="note-list__item">
+                <a class="note-list__link" href="{% url 'note_detail' note.pk %}">
+                    <p class="note-list__content">{{ note.content|truncatechars:200 }}</p>
+                    <time class="note-list__date" datetime="{{ note.created_at|date:'c' }}">
+                        {{ note.created_at|date:"Y/m/d H:i" }}
+                    </time>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="note-list__empty">
+            <p class="note-list__empty-title">هنوز متنی ذخیره نشده است</p>
+            <p class="note-list__empty-text">اولین یادداشت خود را در بخش «متن جدید» بنویسید و ذخیره کنید.</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

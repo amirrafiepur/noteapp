@@ -1,0 +1,80 @@
+---
+description: Core architecture rules for the Django prototype
+alwaysApply: true
+---
+
+# Project Architecture Rules
+
+This project is a local Django application that will later be wrapped inside a Windows desktop application using PySide6 and Qt WebEngine.
+
+The current phase is Django prototype development only.
+
+Do NOT implement PySide6, Qt WebEngine, or PyInstaller unless explicitly requested.
+
+## Django
+
+Use:
+
+- Python
+- Django
+- SQLite
+- Django Templates
+- HTML
+- CSS
+- Minimal vanilla JavaScript
+
+Do not introduce:
+
+- React
+- Vue
+- Angular
+- Node.js frontend frameworks
+- Django REST Framework
+- GraphQL
+
+unless explicitly requested.
+
+## Django Apps
+
+The project should contain only these two Django apps:
+
+- accounts
+- notes
+
+Do not create additional Django apps unless explicitly requested.
+
+## Architecture
+
+Keep business logic inside Django.
+
+Use:
+
+- Django ORM
+- Django Forms
+- Django Authentication
+- Django URL routing
+- Django Templates
+
+Do not unnecessarily introduce additional architectural layers.
+
+## Desktop Compatibility
+
+The Django application must remain suitable for future execution inside:
+
+PySide6
+→ Qt WebEngine
+→ Windows executable
+
+Avoid cloud dependencies and external services.
+
+Do not implement PyInstaller-specific logic during the current prototype phase.
+
+## Development
+
+Work incrementally.
+
+Inspect existing files before editing them.
+
+Do not rewrite functioning code unnecessarily.
+
+Do not implement future features unless explicitly requested.

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}ثبت‌نام{% endblock %}
+{% block body_class %}page-auth{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-card">
+        <header class="auth-card__header">
+            <h1 class="auth-card__title">ایجاد حساب کاربری</h1>
+            <p class="auth-card__subtitle">برای شروع، یک حساب کاربری جدید بسازید.</p>
+        </header>
+
+        {% if form.non_field_errors %}
+        <ul class="form-errors form-errors--summary">
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form class="auth-form" method="post" action="{% url 'register' %}" novalidate>
+            {% csrf_token %}
+            {% include "partials/form_field.html" with field=form.username %}
+            {% include "partials/form_field.html" with field=form.password1 %}
+            {% include "partials/form_field.html" with field=form.password2 %}
+            <button type="submit" class="btn btn--primary btn--block">ثبت‌نام</button>
+        </form>
+
+        <p class="auth-card__footer">
+            قبلاً ثبت‌نام کرده‌اید؟
+            <a class="auth-card__link" href="{% url 'login' %}">ورود</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

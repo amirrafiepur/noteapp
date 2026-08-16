@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}یادداشت‌ها{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <header class="site-header">
+        <div class="site-header__brand">
+            <a href="{% url 'dashboard' %}">یادداشت‌ها</a>
+        </div>
+        <nav class="site-header__nav" aria-label="ناوبری اصلی">
+            {% if user.is_authenticated %}
+                <span class="site-header__user">کاربر: {{ user.username }}</span>
+                <form class="logout-form" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--ghost">خروج</button>
+                </form>
+            {% else %}
+                <a class="nav-link" href="{% url 'login' %}">ورود</a>
+                <a class="nav-link nav-link--accent" href="{% url 'register' %}">ثبت‌نام</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {% if messages %}
+    <div class="messages" role="status" aria-live="polite">
+        {% for message in messages %}
+        <div class="message message-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

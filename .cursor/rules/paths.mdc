@@ -1,0 +1,22 @@
+---
+description: Filesystem and path handling rules
+alwaysApply: true
+---
+
+# Filesystem Rules
+
+Use pathlib.Path for filesystem paths.
+
+Do not hardcode absolute Windows paths.
+
+Do not assume a specific user's home directory.
+
+Keep development paths portable.
+
+Do not write application data into arbitrary filesystem locations.
+
+Do not implement PyInstaller-specific path handling during the Django prototype phase.
+
+When filesystem paths are required, prefer paths derived from Django's BASE_DIR or an explicitly configured application-data directory.
+
+Do not introduce complex packaging-specific path logic unless the current development phase requires it.

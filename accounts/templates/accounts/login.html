@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}ورود{% endblock %}
+{% block body_class %}page-auth{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-card">
+        <header class="auth-card__header">
+            <h1 class="auth-card__title">ورود به حساب کاربری</h1>
+            <p class="auth-card__subtitle">برای دسترسی به یادداشت‌های خود وارد شوید.</p>
+        </header>
+
+        {% if form.non_field_errors %}
+        <ul class="form-errors form-errors--summary">
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <form class="auth-form" method="post" action="{% url 'login' %}" novalidate>
+            {% csrf_token %}
+            {% include "partials/form_field.html" with field=form.username %}
+            {% include "partials/form_field.html" with field=form.password %}
+            <button type="submit" class="btn btn--primary btn--block">ورود</button>
+        </form>
+
+        <p class="auth-card__footer">
+            حساب کاربری ندارید؟
+            <a class="auth-card__link" href="{% url 'register' %}">ثبت‌نام</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
