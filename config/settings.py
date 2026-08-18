@@ -13,8 +13,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from . import runtime
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Where bundled, read-only resources (templates, static files) are read
+# from. Equal to BASE_DIR in normal development; points at the PyInstaller
+# extraction directory when running as a frozen executable.
+RESOURCE_DIR = runtime.get_resource_dir()
+
+# Where persistent, writable data (the SQLite database) is stored. Equal to
+# BASE_DIR in development so `db.sqlite3` keeps living next to manage.py;
+# moves to a per-user AppData-style directory when frozen, since the
+# PyInstaller bundle directory may be read-only. See config/runtime.py.
+DATA_DIR = runtime.ensure_data_dir()
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +41,10 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to True for local development (`manage.py runserver`) and to
+# False when running as a frozen desktop build, matching the existing dev
+# behaviour exactly unless explicitly overridden with DJANGO_DEBUG.
+DEBUG = os.environ.get('DJANGO_DEBUG', '' if runtime.FROZEN else 'True') == 'True'
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -64,7 +80,20 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        # The project-level `templates/` dir, plus each app's `templates/`
+        # dir listed explicitly. APP_DIRS below already finds the latter
+        # via each app's on-disk path in normal development — but that
+        # path resolution is unreliable once the app's source is frozen
+        # into a PyInstaller archive, so listing them here directly
+        # (resolved through RESOURCE_DIR, which already points at the
+        # PyInstaller bundle when frozen) makes template loading robust
+        # either way. Harmless duplication in dev: Django's loader simply
+        # finds the same files through whichever path matches first.
+        'DIRS': [
+            RESOURCE_DIR / 'templates',
+            RESOURCE_DIR / 'accounts' / 'templates',
+            RESOURCE_DIR / 'notes' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,7 +114,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DATA_DIR / 'db.sqlite3',
     }
 }
 
@@ -127,7 +156,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    RESOURCE_DIR / 'static',
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'

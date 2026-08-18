@@ -1,0 +1,8 @@
+# Extra dependencies needed only to BUILD the packaged Windows executable —
+# not needed to run the app in development, and not bundled into the EXE
+# itself (PyInstaller is a build tool, not a runtime dependency).
+#
+# Install with:
+#   pip install -r requirements.txt -r requirements-build.txt
+
+pyinstaller==6.22.1
